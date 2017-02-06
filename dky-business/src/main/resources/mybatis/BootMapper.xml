@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.dky.business.repository.repository.BootMapper" >
+  <resultMap id="BaseResultMap" type="com.dky.common.bean.Boot" >
+    <id column="ID" property="id" jdbcType="DECIMAL" />
+    <result column="AD_CLIENT_ID" property="adClientId" jdbcType="DECIMAL" />
+    <result column="AD_ORG_ID" property="adOrgId" jdbcType="DECIMAL" />
+    <result column="OWNERID" property="ownerid" jdbcType="DECIMAL" />
+    <result column="MODIFIERID" property="modifierid" jdbcType="DECIMAL" />
+    <result column="CREATIONDATE" property="creationdate" jdbcType="TIMESTAMP" />
+    <result column="MODIFIEDDATE" property="modifieddate" jdbcType="TIMESTAMP" />
+    <result column="IMAGEURL" property="imageurl" jdbcType="VARCHAR" />
+    <result column="STARTDATE" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="ENDDATE" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="ISACTIVE" property="isactive" jdbcType="CHAR" />
+      <result column="JUMPURL" property="jumpurl" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   ID, AD_CLIENT_ID, AD_ORG_ID, OWNERID, MODIFIERID, CREATIONDATE, MODIFIEDDATE, IMAGEURL,
+    STARTDATE, ENDDATE, ISACTIVE, JUMPURL
+  </sql>
+    <!--查询有效的启动页 -->
+    <select id="queryValid" parameterType="com.dky.common.bean.Boot" resultMap="BaseResultMap">
+        SELECT <include refid="Base_Column_List" /> FROM M_BOOT
+        WHERE ISACTIVE = 'Y'
+        <![CDATA[ AND STARTDATE <=  trunc(sysdate) AND ENDDATE >= trunc(sysdate) ]]>
+    </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from M_BOOT
+    where ID = #{id,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from M_BOOT
+    where ID = #{id,jdbcType=DECIMAL}
+  </delete>
+    <insert id="insert" parameterType="com.dky.common.bean.Boot" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
+            select SEQ_M_BOOT.nextval from dual
+        </selectKey>
+        insert into M_BOOT (ID, AD_CLIENT_ID, AD_ORG_ID,
+        OWNERID, MODIFIERID, CREATIONDATE,
+        MODIFIEDDATE, IMAGEURL, STARTDATE,
+        ENDDATE, ISACTIVE, JUMPURL
+        )
+        values (#{id,jdbcType=DECIMAL}, #{adClientId,jdbcType=DECIMAL}, #{adOrgId,jdbcType=DECIMAL},
+        #{ownerid,jdbcType=DECIMAL}, #{modifierid,jdbcType=DECIMAL}, #{creationdate,jdbcType=DATE},
+        #{modifieddate,jdbcType=DATE}, #{imageurl,jdbcType=VARCHAR}, #{startdate,jdbcType=DATE},
+        #{enddate,jdbcType=DATE}, #{isactive,jdbcType=CHAR}, #{jumpurl,jdbcType=VARCHAR}
+        )
+    </insert>
+    <insert id="insertSelective" parameterType="com.dky.common.bean.Boot" >
+        <selectKey resultType="java.lang.Long" keyProperty="id" order="BEFORE" >
+            select SEQ_M_BOOT.nextval from dual
+        </selectKey>
+        insert into M_BOOT
+        <trim prefix="(" suffix=")" suffixOverrides="," >
+            ID,
+            <if test="adClientId != null" >
+                AD_CLIENT_ID,
+            </if>
+            <if test="adOrgId != null" >
+                AD_ORG_ID,
+            </if>
+            <if test="ownerid != null" >
+                OWNERID,
+            </if>
+            <if test="modifierid != null" >
+                MODIFIERID,
+            </if>
+            <if test="creationdate != null" >
+                CREATIONDATE,
+            </if>
+            <if test="modifieddate != null" >
+                MODIFIEDDATE,
+            </if>
+            <if test="imageurl != null" >
+                IMAGEURL,
+            </if>
+            <if test="startdate != null" >
+                STARTDATE,
+            </if>
+            <if test="enddate != null" >
+                ENDDATE,
+            </if>
+            <if test="isactive != null" >
+                ISACTIVE,
+            </if>
+            <if test="jumpurl != null" >
+                JUMPURL,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides="," >
+            #{id,jdbcType=DECIMAL},
+            <if test="adClientId != null" >
+                #{adClientId,jdbcType=DECIMAL},
+            </if>
+            <if test="adOrgId != null" >
+                #{adOrgId,jdbcType=DECIMAL},
+            </if>
+            <if test="ownerid != null" >
+                #{ownerid,jdbcType=DECIMAL},
+            </if>
+            <if test="modifierid != null" >
+                #{modifierid,jdbcType=DECIMAL},
+            </if>
+            <if test="creationdate != null" >
+                #{creationdate,jdbcType=DATE},
+            </if>
+            <if test="modifieddate != null" >
+                #{modifieddate,jdbcType=DATE},
+            </if>
+            <if test="imageurl != null" >
+                #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="startdate != null" >
+                #{startdate,jdbcType=DATE},
+            </if>
+            <if test="enddate != null" >
+                #{enddate,jdbcType=DATE},
+            </if>
+            <if test="isactive != null" >
+                #{isactive,jdbcType=CHAR},
+            </if>
+            <if test="jumpurl != null" >
+                #{jumpurl,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.dky.common.bean.Boot" >
+        update M_BOOT
+        <set >
+            <if test="adClientId != null" >
+                AD_CLIENT_ID = #{adClientId,jdbcType=DECIMAL},
+            </if>
+            <if test="adOrgId != null" >
+                AD_ORG_ID = #{adOrgId,jdbcType=DECIMAL},
+            </if>
+            <if test="ownerid != null" >
+                OWNERID = #{ownerid,jdbcType=DECIMAL},
+            </if>
+            <if test="modifierid != null" >
+                MODIFIERID = #{modifierid,jdbcType=DECIMAL},
+            </if>
+            <if test="creationdate != null" >
+                CREATIONDATE = #{creationdate,jdbcType=DATE},
+            </if>
+            <if test="modifieddate != null" >
+                MODIFIEDDATE = #{modifieddate,jdbcType=DATE},
+            </if>
+            <if test="imageurl != null" >
+                IMAGEURL = #{imageurl,jdbcType=VARCHAR},
+            </if>
+            <if test="startdate != null" >
+                STARTDATE = #{startdate,jdbcType=DATE},
+            </if>
+            <if test="enddate != null" >
+                ENDDATE = #{enddate,jdbcType=DATE},
+            </if>
+            <if test="isactive != null" >
+                ISACTIVE = #{isactive,jdbcType=CHAR},
+            </if>
+            <if test="jumpurl != null" >
+                JUMPURL = #{jumpurl,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=DECIMAL}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.dky.common.bean.Boot" >
+    update M_BOOT
+    set AD_CLIENT_ID = #{adClientId,jdbcType=DECIMAL},
+      AD_ORG_ID = #{adOrgId,jdbcType=DECIMAL},
+      OWNERID = #{ownerid,jdbcType=DECIMAL},
+      MODIFIERID = #{modifierid,jdbcType=DECIMAL},
+      CREATIONDATE = #{creationdate,jdbcType=DATE},
+      MODIFIEDDATE = #{modifieddate,jdbcType=DATE},
+      IMAGEURL = #{imageurl,jdbcType=VARCHAR},
+      STARTDATE = #{startdate,jdbcType=DATE},
+      ENDDATE = #{enddate,jdbcType=DATE},
+      ISACTIVE = #{isactive,jdbcType=CHAR},
+      JUMPURL = #{jumpurl,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=DECIMAL}
+  </update>
+</mapper>
